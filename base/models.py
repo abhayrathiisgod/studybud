@@ -21,6 +21,11 @@ class Room(models.Model):
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add= True) # diffrence is takes only 1 time stamp when we save up one takes of everytime
     
+    class Meta:
+        # - is added to get the new one on top
+        ordering = ['-updated','-created']
+
+
     def __str__(self):
         return self.name 
     
