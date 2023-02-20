@@ -14,13 +14,16 @@ def home(request):
     q = request.GET.get('q') if request.GET.get('q') !=None else ''
 
     #                         the below atleast contains above query
-    rooms = Room.objects.filter(Q(topic__name__icontains=q)) # gives all room in databse
+    rooms = Room.objects.filter(
+        Q(topic__name__icontains=q) |
+        Q(name__icontains =q) |
+        Q(description__icontains=q)) # gives all room in databse
     topics = Topic.objects.all() 
-    
-    context = {'rooms':rooms, 'topics':topics}
+    room_count = rooms.count()
+    context = {'rooms':rooms, 'topics':topics,'room_count':room_count}
     return render(request, 'base/home.html', context)
 
-def room(request,pk): # pk is primary key
+def room(request,pk): # pk is primary key 
     room = Room.objects.get(id=pk) # one single item
     context ={'room': room}
     return render(request, 'base/room.html',context)
